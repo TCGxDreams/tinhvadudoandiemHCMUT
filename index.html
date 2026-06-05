@@ -1,309 +1,1146 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tính & Dự đoán Điểm Xét Tuyển — ĐH Khoa học Tự nhiên 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --ink:#0f1b2d; --ink-soft:#3a4a5f; --paper:#f4f1e9; --paper-2:#eae5d8;
-  --line:#1a2738; --accent:#0d5c4f; --accent-2:#c8442b; --gold:#caa24a;
-  --card:#fbfaf5; --shadow:8px 8px 0 #0f1b2d;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Space Grotesk',sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;
-  background-image:radial-gradient(var(--paper-2) 1.2px,transparent 1.2px);background-size:22px 22px;min-height:100vh}
-.wrap{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
-header{border-bottom:3px solid var(--line);padding-bottom:24px;margin-bottom:36px}
-.eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent-2);font-weight:600}
-h1{font-family:'Fraunces',serif;font-size:clamp(34px,6vw,58px);line-height:1.02;font-weight:600;margin:8px 0 14px;letter-spacing:-.02em}
-h1 em{font-style:italic;color:var(--accent)}
-.sub{font-size:15px;color:var(--ink-soft);max-width:680px}
-.tag{display:inline-block;margin-top:14px;font-size:12px;font-weight:600;background:var(--line);color:var(--paper);padding:5px 12px;border-radius:2px;letter-spacing:.05em}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:820px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:2.5px solid var(--line);border-radius:4px;box-shadow:var(--shadow);padding:26px}
-.card h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;margin-bottom:4px;letter-spacing:-.01em}
-.card .note{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
-label{display:block;font-size:13px;font-weight:600;margin:16px 0 6px;letter-spacing:.02em}
-.row{display:flex;gap:12px}.row>div{flex:1}
-input,select{width:100%;font-family:'Space Grotesk';font-size:15px;padding:11px 13px;border:2px solid var(--line);border-radius:3px;background:#fff;color:var(--ink);transition:.15s}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
-input[type=number]::-webkit-inner-spin-button{opacity:.4}
-.hint{font-size:11px;color:var(--ink-soft);margin-top:4px;line-height:1.5}
-.seg{display:flex;border:2px solid var(--line);border-radius:3px;overflow:hidden;margin-top:4px}
-.seg button{flex:1;font-family:'Space Grotesk';font-weight:600;font-size:13px;padding:11px 6px;background:#fff;border:none;border-right:2px solid var(--line);cursor:pointer;transition:.12s}
-.seg button:last-child{border-right:none}
-.seg button.on{background:var(--accent);color:#fff}
-.btn{width:100%;margin-top:24px;font-family:'Space Grotesk';font-weight:700;font-size:16px;letter-spacing:.04em;padding:15px;background:var(--accent-2);color:#fff;border:2.5px solid var(--line);border-radius:3px;box-shadow:5px 5px 0 var(--line);cursor:pointer;transition:.12s}
-.btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--line)}
-.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--line)}
-.result{margin-top:8px}
-.bignum{font-family:'Fraunces',serif;font-size:72px;font-weight:600;line-height:1;color:var(--accent);letter-spacing:-.02em}
-.bignum small{font-size:22px;color:var(--ink-soft);font-weight:400}
-.scale100{font-size:15px;font-weight:600;margin-top:6px;color:var(--accent-2)}
-.breakdown{margin-top:18px;border-top:2px dashed var(--line);padding-top:14px}
-.brow{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px dotted #ccc;gap:10px}
-.brow span:first-child{flex:1}.brow b{font-weight:600;white-space:nowrap}
-.brow.total{border-bottom:none;border-top:2px solid var(--line);margin-top:6px;padding-top:10px;font-size:16px}
-.predict{margin-top:14px}
-.pcard{display:flex;align-items:center;gap:14px;padding:12px 14px;border:2px solid var(--line);border-radius:3px;margin-bottom:10px;background:#fff}
-.dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
-.pcard .pn{font-weight:600;font-size:14px}
-.pcard .pd{font-size:12px;color:var(--ink-soft)}
-.pcard .pp{margin-left:auto;font-family:'Fraunces',serif;font-size:22px;font-weight:600;white-space:nowrap}
-.empty{font-size:14px;color:var(--ink-soft);font-style:italic;padding:30px 0;text-align:center}
-.formula{background:var(--line);color:var(--paper);padding:16px 18px;border-radius:3px;font-size:13px;line-height:1.7;margin-top:18px}
-.formula code{font-family:'Space Grotesk';color:var(--gold);font-weight:600}
-.disc{margin-top:36px;font-size:12px;color:var(--ink-soft);border-top:2px solid var(--line);padding-top:16px;line-height:1.7}
-.disc a{color:var(--accent)}
-footer{margin-top:40px;text-align:center;font-size:12px;color:var(--ink-soft)}
-.cbselect{max-height:none}
-.combobox{margin-top:4px}
-.tagsmall{font-size:11px;color:var(--ink-soft);margin-top:4px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tính & Dự đoán Điểm Xét Tuyển — ĐH Bách khoa ĐHQG-HCM 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #10182b;
+      --ink-soft: #3d4a63;
+      --paper: #eef1f6;
+      --paper-2: #dfe4ee;
+      --line: #14233f;
+      --accent: #11487a;
+      --accent-2: #d4541e;
+      --gold: #c79a3a;
+      --card: #fbfcfe;
+      --shadow: 8px 8px 0 #14233f
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.55;
+      background-image: radial-gradient(var(--paper-2) 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
+      min-height: 100vh
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 80px
+    }
+
+    header {
+      border-bottom: 3px solid var(--line);
+      padding-bottom: 24px;
+      margin-bottom: 28px
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      font-weight: 600
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1.02;
+      font-weight: 600;
+      margin: 8px 0 14px;
+      letter-spacing: -.02em
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent)
+    }
+
+    .sub {
+      font-size: 15px;
+      color: var(--ink-soft);
+      max-width: 680px
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--line);
+      color: var(--paper);
+      padding: 5px 12px;
+      border-radius: 2px;
+      letter-spacing: .05em
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 28px;
+      border: 2.5px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 4px 4px 0 var(--line)
+    }
+
+    .tabs button {
+      flex: 1;
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 15px 10px;
+      background: var(--card);
+      border: none;
+      border-right: 2.5px solid var(--line);
+      cursor: pointer;
+      transition: .12s
+    }
+
+    .tabs button:last-child {
+      border-right: none
+    }
+
+    .tabs button.on {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px
+    }
+
+    @media(max-width:820px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 2.5px solid var(--line);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      padding: 26px
+    }
+
+    .card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      letter-spacing: -.01em
+    }
+
+    .card .note {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-bottom: 18px
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 16px 0 6px;
+      letter-spacing: .02em
+    }
+
+    .row {
+      display: flex;
+      gap: 12px
+    }
+
+    .row>div {
+      flex: 1
+    }
+
+    input,
+    select {
+      width: 100%;
+      font-family: 'Space Grotesk';
+      font-size: 15px;
+      padding: 11px 13px;
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      background: #fff;
+      color: var(--ink);
+      transition: .15s
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 3px 3px 0 var(--accent)
+    }
+
+    input[type=number]::-webkit-inner-spin-button {
+      opacity: .4
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+      line-height: 1.5
+    }
+
+    .seg {
+      display: flex;
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px
+    }
+
+    .seg button {
+      flex: 1;
+      font-family: 'Space Grotesk';
+      font-weight: 600;
+      font-size: 13px;
+      padding: 11px 6px;
+      background: #fff;
+      border: none;
+      border-right: 2px solid var(--line);
+      cursor: pointer;
+      transition: .12s
+    }
+
+    .seg button:last-child {
+      border-right: none
+    }
+
+    .seg button.on {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 24px;
+      font-family: 'Space Grotesk';
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: .04em;
+      padding: 15px;
+      background: var(--accent-2);
+      color: #fff;
+      border: 2.5px solid var(--line);
+      border-radius: 3px;
+      box-shadow: 5px 5px 0 var(--line);
+      cursor: pointer;
+      transition: .12s
+    }
+
+    .btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0 var(--line)
+    }
+
+    .btn:active {
+      transform: translate(5px, 5px);
+      box-shadow: 0 0 0 var(--line)
+    }
+
+    .btn.sub {
+      background: var(--accent);
+      margin-top: 14px;
+      font-size: 14px;
+      padding: 11px;
+      box-shadow: 4px 4px 0 var(--line)
+    }
+
+    .helper {
+      margin-top: 10px;
+      border: 2px dashed var(--line);
+      border-radius: 4px;
+      padding: 14px;
+      background: #fff
+    }
+
+    .helper h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .helper h4 a {
+      font-size: 11px;
+      color: var(--accent-2);
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: underline
+    }
+
+    .miniout {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 8px
+    }
+
+    .bignum {
+      font-family: 'Fraunces', serif;
+      font-size: 68px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: -.02em
+    }
+
+    .bignum small {
+      font-size: 22px;
+      color: var(--ink-soft);
+      font-weight: 400
+    }
+
+    .scale100 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 6px;
+      color: var(--accent-2)
+    }
+
+    .breakdown {
+      margin-top: 18px;
+      border-top: 2px dashed var(--line);
+      padding-top: 14px
+    }
+
+    .brow {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 5px 0;
+      border-bottom: 1px dotted #bcc4d4;
+      gap: 10px
+    }
+
+    .brow span:first-child {
+      flex: 1
+    }
+
+    .brow b {
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .brow.total {
+      border-bottom: none;
+      border-top: 2px solid var(--line);
+      margin-top: 6px;
+      padding-top: 10px;
+      font-size: 16px
+    }
+
+    .pcard {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      margin-bottom: 10px;
+      background: #fff
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .pcard .pn {
+      font-weight: 600;
+      font-size: 14px
+    }
+
+    .pcard .pd {
+      font-size: 12px;
+      color: var(--ink-soft)
+    }
+
+    .pcard .pp {
+      margin-left: auto;
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .empty {
+      font-size: 14px;
+      color: var(--ink-soft);
+      font-style: italic;
+      padding: 30px 0;
+      text-align: center
+    }
+
+    .formula {
+      background: var(--line);
+      color: var(--paper);
+      padding: 16px 18px;
+      border-radius: 3px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 18px
+    }
+
+    .formula code {
+      font-family: 'Space Grotesk';
+      color: var(--gold);
+      font-weight: 600
+    }
+
+    .disc {
+      margin-top: 36px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      border-top: 2px solid var(--line);
+      padding-top: 16px;
+      line-height: 1.7
+    }
+
+    .disc a {
+      color: var(--accent)
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-soft)
+    }
+
+    .tagsmall {
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: 4px
+    }
+
+    .subjrow {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px
+    }
+
+    .subjrow .nm {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600
+    }
+
+    .subjrow input {
+      width: 70px;
+      padding: 8px;
+      text-align: center
+    }
+
+    .hide {
+      display: none
+    }
+
+    .cnt {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin: 6px 0 12px;
+      font-weight: 600
+    }
+
+    .matchbar {
+      height: 8px;
+      background: var(--paper-2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px
+    }
+
+    .matchbar>div {
+      height: 100%
+    }
+
+    .warn {
+      margin-top: 14px;
+      padding: 11px 13px;
+      border: 2px solid var(--accent-2);
+      border-radius: 3px;
+      background: #fbeadf;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #7a2f10
+    }
+
+    .warn b {
+      color: var(--accent-2)
+    }
+
+    .wbox {
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      padding: 12px;
+      margin-top: 4px;
+      background: #fff;
+      font-size: 12.5px;
+      line-height: 1.6
+    }
+
+    .wbox b {
+      color: var(--accent)
+    }
+
+    .dbl {
+      font-size: 11px;
+      background: var(--gold);
+      color: #3a2c08;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 4px
+    }
+  </style>
 </head>
+
 <body>
-<div class="wrap">
-<header>
-  <div class="eyebrow">HCMUS · ĐHQG-HCM · Phương thức 2 · Tuyển sinh 2026</div>
-  <h1>Tính &amp; <em>Dự đoán</em><br>điểm xét tuyển</h1>
-  <p class="sub">Công cụ tính điểm xét tuyển kết hợp (THPT/ĐGNL + học bạ) vào Trường Đại học Khoa học Tự nhiên (ĐHQG-HCM) theo đúng công thức &amp; trọng số trong phương hướng tuyển sinh dự kiến 2026. Đầy đủ 39 ngành với tổ hợp xét tuyển chính thức.</p>
-  <span class="tag">Nguồn: tuyensinh.hcmus.edu.vn — cập nhật 05/05/2026</span>
-</header>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">HCMUT · ĐHQG-HCM · Xét tuyển tổng hợp · Tuyển sinh 2026</div>
+      <h1>Tính &amp; <em>Dự đoán</em><br>điểm xét tuyển</h1>
+      <p class="sub">Tính điểm xét tuyển tổng hợp vào Trường Đại học Bách khoa (ĐHQG-HCM) theo đúng công thức 2026: học
+        lực = 70% ĐGNL + 20% THPT + 10% học bạ, môn Toán nhân hệ số 2 ở cả 3 thành phần. Kèm trợ giúp tính điểm THPT/học
+        bạ và gợi ý ngành phù hợp.</p>
+      <span class="tag">Theo đề án chính thức HCMUT 2026 · ĐGNL thang 1500 · quy đổi SAT/ACT/IB/A-Level đầy đủ</span>
+    </header>
 
-<div class="grid">
-  <div class="card">
-    <h2>Nhập điểm</h2>
-    <p class="note">Điểm xét tuyển = Điểm học lực + Điểm cộng + Điểm ưu tiên</p>
-
-    <label>Chọn ngành / nhóm ngành</label>
-    <select id="nganh" class="combobox"></select>
-    <div class="tagsmall" id="thoptip"></div>
-
-    <label>Phương thức điểm môn thi</label>
-    <div class="seg" id="method">
-      <button data-m="thpt" class="on">Thi THPT</button>
-      <button data-m="dgnl">ĐGNL</button>
-      <button data-m="both">Cả hai (lấy max)</button>
+    <div class="tabs">
+      <button id="tabA" class="on" onclick="switchTab('A')">① Tính điểm 1 ngành</button>
+      <button id="tabB" onclick="switchTab('B')">② Gợi ý ngành phù hợp</button>
+      <button id="tabC" onclick="switchTab('C')">③ Quy đổi SAT / IELTS</button>
     </div>
 
-    <div id="thptBox">
-      <label>Tổng điểm tổ hợp 3 môn thi THPT (thang 30)</label>
-      <input id="thpt" type="number" step="0.01" min="0" max="30" placeholder="VD: 25.50">
-      <div class="hint">Lấy tổ hợp có tổng cao nhất trong các tổ hợp của ngành.</div>
-    </div>
+    <!-- ===== TAB A ===== -->
+    <div id="paneA">
+      <div class="grid">
+        <div class="card">
+          <h2>Nhập điểm</h2>
+          <p class="note">Điểm xét tuyển (thang 100) = Điểm học lực + Điểm cộng + Điểm ưu tiên</p>
 
-    <div id="dgnlBox" style="display:none">
-      <div class="row">
-        <div><label>Điểm ĐGNL của bạn</label><input id="dgnl" type="number" step="1" min="0" placeholder="VD: 850"></div>
-        <div><label>ĐGNL cao nhất (Max)</label><input id="dgnlMax" type="number" step="1" min="1" value="1200"></div>
+          <label>Chọn ngành</label>
+          <select id="nganh"></select>
+          <div class="tagsmall" id="info"></div>
+
+          <div class="wbox">Trọng số học lực cố định theo HCMUT 2026: <b>70%</b> ĐGNL (thang 1500) + <b>20%</b> THPT +
+            <b>10%</b> học bạ. Môn Toán <b>nhân hệ số 2</b> ở cả 3 thành phần (THPT & học bạ: Toán×2 + 2 môn, chia 4;
+            ĐGNL đã nhân đôi Toán sẵn trong đề).</div>
+
+          <label>1 · Điểm thi ĐGNL (V-ACT) — thang 1500 (Toán×2)</label>
+          <input id="dgnl" type="number" step="1" min="0" max="1500" placeholder="VD: 1050">
+          <div class="hint">Điểm ĐGNL quy về thang 1500 với Toán nhân đôi. Quy đổi: (điểm ÷ 1500) × 100. Chưa biết số
+            này? Dùng công cụ bên dưới.</div>
+          <div class="helper">
+            <h4>Trợ giúp: tính điểm ĐGNL từ 4 phần <a onclick="toggle('h_dgnl')">mở/đóng ▾</a></h4>
+            <div id="h_dgnl">
+              <div class="hint">Nhập điểm từng phần trên phiếu kết quả V-ACT (mỗi phần tối đa 300). Toán sẽ được nhân
+                đôi để ra thang 1500 theo cách tính của Bách khoa.</div>
+              <div class="subjrow" style="margin-top:8px"><span class="nm">Tiếng Việt</span><input id="d_tv"
+                  type="number" min="0" max="300" placeholder="/300"></div>
+              <div class="subjrow"><span class="nm">Tiếng Anh</span><input id="d_ta" type="number" min="0" max="300"
+                  placeholder="/300"></div>
+              <div class="subjrow"><span class="nm">Toán <span class="dbl">×2</span></span><input id="d_toan"
+                  type="number" min="0" max="300" placeholder="/300"></div>
+              <div class="subjrow"><span class="nm">Tư duy khoa học</span><input id="d_tdkh" type="number" min="0"
+                  max="300" placeholder="/300"></div>
+              <button class="btn sub" onclick="calcDgnl()">Tính & điền vào ô trên</button>
+              <div class="miniout" id="dgnlMini"></div>
+            </div>
+          </div>
+
+          <label>2 · Điểm thi THPT — nhập theo môn (thang 10)</label>
+          <div class="row">
+            <div><label style="margin-top:0">Toán <span class="dbl">×2</span></label><input id="t_toan" type="number"
+                step="0.01" min="0" max="10" placeholder="Toán"></div>
+            <div><label style="margin-top:0">Môn 2</label><input id="t_m2" type="number" step="0.01" min="0" max="10">
+            </div>
+            <div><label style="margin-top:0">Môn 3</label><input id="t_m3" type="number" step="0.01" min="0" max="10">
+            </div>
+          </div>
+          <div class="hint">Điểm THPT quy đổi thang 100 = [(Toán×2 + Môn2 + Môn3) ÷ 40] × 100.</div>
+
+          <label>3 · Điểm học bạ — TB 3 năm theo môn (thang 10)</label>
+          <div class="helper">
+            <h4>Nhập điểm học bạ 3 năm <a onclick="toggle('h_hb')">mở/đóng ▾</a></h4>
+            <div id="h_hb">
+              <div class="hint">Nhập điểm TB cả năm từng môn cho lớp 10, 11, 12. Tính TB mỗi môn qua 3 năm.</div>
+              <div style="margin-top:8px">
+                <div class="subjrow"><span class="nm">Toán <span class="dbl">×2</span></span><input id="hb_toan_10"
+                    type="number" placeholder="L10"><input id="hb_toan_11" type="number" placeholder="L11"><input
+                    id="hb_toan_12" type="number" placeholder="L12"></div>
+                <div class="subjrow"><span class="nm">Môn 2</span><input id="hb_m2_10" type="number"
+                    placeholder="L10"><input id="hb_m2_11" type="number" placeholder="L11"><input id="hb_m2_12"
+                    type="number" placeholder="L12"></div>
+                <div class="subjrow"><span class="nm">Môn 3</span><input id="hb_m3_10" type="number"
+                    placeholder="L10"><input id="hb_m3_11" type="number" placeholder="L11"><input id="hb_m3_12"
+                    type="number" placeholder="L12"></div>
+              </div>
+              <div class="miniout" id="hbMini"></div>
+            </div>
+          </div>
+
+          <label>Điểm cộng (thưởng + xét thưởng + khuyến khích — tối đa 10)</label>
+          <input id="cong" type="number" step="0.5" min="0" max="10" value="0">
+          <div class="hint">Tổng các loại điểm cộng ≤ 10/100. Nếu chọn quy đổi chứng chỉ tiếng Anh thì không được tính
+            điểm khuyến khích chứng chỉ (và ngược lại).</div>
+
+          <div class="row">
+            <div><label>Khu vực ưu tiên (thang 30)</label>
+              <select id="kv">
+                <option value="0">KV3 (0)</option>
+                <option value="0.25">KV2 (0.25)</option>
+                <option value="0.5">KV2-NT (0.5)</option>
+                <option value="0.75">KV1 (0.75)</option>
+              </select>
+            </div>
+            <div><label>Đối tượng ưu tiên (thang 30)</label>
+              <select id="dt">
+                <option value="0">Không (0)</option>
+                <option value="1">UT2 (1.0)</option>
+                <option value="2">UT1 (2.0)</option>
+              </select>
+            </div>
+          </div>
+          <div class="hint">Điểm ưu tiên KV+ĐT (thang 30) sẽ được quy đổi sang thang 100, tối đa 9,17/100, và giảm dần
+            khi điểm cao theo công thức Bộ GD&ĐT.</div>
+
+          <button class="btn" onclick="calc()">Tính điểm ngay →</button>
+        </div>
+
+        <div class="card">
+          <h2>Kết quả</h2>
+          <p class="note">Điểm xét tuyển thang 100 (chuẩn HCMUT)</p>
+          <div id="out">
+            <div class="empty">Chọn ngành, nhập điểm rồi bấm "Tính điểm ngay".</div>
+          </div>
+        </div>
       </div>
-      <div class="hint">Quy đổi thang 30: (Điểm bạn ÷ Max) × 30. Max = điểm cao nhất công bố của 2 đợt thi ĐGNL 2026.</div>
     </div>
 
-    <label>Điểm học bạ tổ hợp 3 môn, 3 năm (thang 30)</label>
-    <input id="hocba" type="number" step="0.01" min="0" max="30" placeholder="VD: 27.00">
-    <div class="hint">Tổng điểm TB 3 năm (lớp 10,11,12) của 3 môn trong tổ hợp, đã ở thang 30. Nếu bạn có điểm TB thang 10 mỗi môn, cộng 3 môn lại (vd 9+9+9 = 27).</div>
+    <!-- ===== TAB B ===== -->
+    <div id="paneB" class="hide">
+      <div class="grid">
+        <div class="card">
+          <h2>Gợi ý ngành</h2>
+          <p class="note">Nhập điểm → xem ngành nào của Bách khoa phù hợp điểm bạn</p>
 
-    <div class="row">
-      <div><label>w (điểm thi) — w1/w3</label><input id="w1" type="number" step="0.05" min="0.7" max="0.9" value="0.8"></div>
-      <div><label>w (học bạ) — w2/w4</label><input id="w2" type="number" step="0.05" min="0.1" max="0.3" value="0.2"></div>
-    </div>
-    <div class="hint">Trường công bố miền: w1,w3 ∈ [0.7–0.9]; w2,w4 ∈ [0.1–0.3], và w(thi)+w(học bạ)=1. Trọng số chính thức công bố cùng ngưỡng đảm bảo chất lượng. Mặc định 0.8 / 0.2.</div>
+          <label>Lọc theo tổ hợp / khối xét tuyển</label>
+          <select id="bFilter"></select>
+          <div class="tagsmall" id="bFilterInfo"></div>
 
-    <label>Điểm cộng cơ sở (giải HSG/chứng chỉ — tối đa 1.5 ở thang 30)</label>
-    <input id="congpoint" type="number" step="0.25" min="0" max="1.5" value="0" placeholder="0">
-    <div class="hint">Chỉ tính 1 loại điểm cộng cao nhất. Môn được cộng: Toán, Lý, Hóa, Sinh, Tin, AI (VOAI), Tiếng Anh (Địa lý cho một số ngành).</div>
-
-    <div class="row">
-      <div><label>Khu vực ưu tiên</label>
-        <select id="kv"><option value="0">KV3 (0.00)</option><option value="0.25">KV2 (0.25)</option><option value="0.5">KV2-NT (0.50)</option><option value="0.75">KV1 (0.75)</option></select>
+          <label>Điểm ĐGNL (thang 1500, Toán×2)</label>
+          <input id="bDgnl" type="number" min="0" max="1500" placeholder="VD: 1050">
+          <div class="helper">
+            <h4>Trợ giúp: tính ĐGNL từ 4 phần <a onclick="toggle('bh_dgnl')">mở/đóng ▾</a></h4>
+            <div id="bh_dgnl" class="hide">
+              <div class="hint">Mỗi phần tối đa 300. Toán được nhân đôi → thang 1500.</div>
+              <div class="row" style="margin-top:8px">
+                <div><label style="margin-top:0">Tiếng Việt</label><input id="bd_tv" type="number" min="0" max="300"
+                    placeholder="/300"></div>
+                <div><label style="margin-top:0">Tiếng Anh</label><input id="bd_ta" type="number" min="0" max="300"
+                    placeholder="/300"></div>
+              </div>
+              <div class="row">
+                <div><label style="margin-top:0">Toán <span class="dbl">×2</span></label><input id="bd_toan"
+                    type="number" min="0" max="300" placeholder="/300"></div>
+                <div><label style="margin-top:0">Tư duy KH</label><input id="bd_tdkh" type="number" min="0" max="300"
+                    placeholder="/300"></div>
+              </div>
+              <button class="btn sub" onclick="calcBDgnl()">Tính & điền vào ô trên</button>
+              <div class="miniout" id="bDgnlMini"></div>
+            </div>
+          </div>
+          <label>Điểm THPT theo môn (thang 10)</label>
+          <div class="row">
+            <div><label style="margin-top:0">Toán <span class="dbl">×2</span></label><input id="bt_toan" type="number"
+                step="0.01" min="0" max="10"></div>
+            <div><label style="margin-top:0">Môn 2</label><input id="bt_m2" type="number" step="0.01" min="0" max="10">
+            </div>
+            <div><label style="margin-top:0">Môn 3</label><input id="bt_m3" type="number" step="0.01" min="0" max="10">
+            </div>
+          </div>
+          <label>Điểm học bạ TB 3 năm theo môn (thang 10)</label>
+          <div class="row">
+            <div><label style="margin-top:0">Toán <span class="dbl">×2</span></label><input id="bhb_toan" type="number"
+                step="0.01" min="0" max="10"></div>
+            <div><label style="margin-top:0">Môn 2</label><input id="bhb_m2" type="number" step="0.01" min="0" max="10">
+            </div>
+            <div><label style="margin-top:0">Môn 3</label><input id="bhb_m3" type="number" step="0.01" min="0" max="10">
+            </div>
+          </div>
+          <div class="hint">Nhập TB cả 3 năm của mỗi môn (đã trung bình sẵn). Toán tự nhân hệ số 2.</div>
+          <div class="helper">
+            <h4>Trợ giúp: tính học bạ từ điểm 3 năm <a onclick="toggle('bh_hb')">mở/đóng ▾</a></h4>
+            <div id="bh_hb" class="hide">
+              <div class="hint">Nhập điểm TB cả năm từng môn cho lớp 10, 11, 12. Công cụ tính TB mỗi môn qua 3 năm rồi
+                điền vào ô trên.</div>
+              <div class="subjrow" style="margin-top:8px"><span class="nm">Toán <span class="dbl">×2</span></span><input
+                  id="bhy_toan_10" type="number" placeholder="L10"><input id="bhy_toan_11" type="number"
+                  placeholder="L11"><input id="bhy_toan_12" type="number" placeholder="L12"></div>
+              <div class="subjrow"><span class="nm">Môn 2</span><input id="bhy_m2_10" type="number"
+                  placeholder="L10"><input id="bhy_m2_11" type="number" placeholder="L11"><input id="bhy_m2_12"
+                  type="number" placeholder="L12"></div>
+              <div class="subjrow"><span class="nm">Môn 3</span><input id="bhy_m3_10" type="number"
+                  placeholder="L10"><input id="bhy_m3_11" type="number" placeholder="L11"><input id="bhy_m3_12"
+                  type="number" placeholder="L12"></div>
+              <button class="btn sub" onclick="calcBHocba3()">Tính TB & điền vào ô trên</button>
+              <div class="miniout" id="bHbMini"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div><label>Điểm cộng</label><input id="bCong" type="number" step="0.5" min="0" max="10" value="0"></div>
+            <div><label>Ưu tiên (thang 30)</label><input id="bUt" type="number" step="0.25" min="0" max="2.75"
+                value="0"></div>
+          </div>
+          <button class="btn" onclick="suggest()">Gợi ý ngành phù hợp →</button>
+        </div>
+        <div class="card">
+          <h2>Ngành phù hợp</h2>
+          <p class="note">Các ngành xếp theo độ phù hợp với điểm của bạn</p>
+          <div id="bOut">
+            <div class="empty">Nhập điểm rồi bấm "Gợi ý ngành phù hợp".</div>
+          </div>
+        </div>
       </div>
-      <div><label>Đối tượng ưu tiên</label>
-        <select id="dt"><option value="0">Không (0.0)</option><option value="1">Nhóm UT2 (1.0)</option><option value="2">Nhóm UT1 (2.0)</option></select>
+    </div>
+
+    <!-- ===== TAB C: SAT / IELTS ===== -->
+    <div id="paneC" class="hide">
+      <div class="grid">
+        <div class="card">
+          <h2>Quy đổi chứng chỉ</h2>
+          <p class="note">Tra cứu giá trị SAT & chứng chỉ tiếng Anh khi xét tuyển vào HCMUT 2026</p>
+
+          <label>Loại chứng chỉ</label>
+          <div class="seg" id="ccType">
+            <button data-c="ielts" class="on">IELTS</button>
+            <button data-c="toefl">TOEFL</button>
+            <button data-c="sat">SAT</button>
+            <button data-c="act">ACT</button>
+            <button data-c="ib">IB</button>
+            <button data-c="alevel">A-Level</button>
+          </div>
+
+          <div id="iel, toeflBox">
+            <label id="ccLabel">Điểm IELTS Academic (0–9.0)</label>
+            <input id="ccVal" type="number" step="0.5" min="0" placeholder="VD: 7.0">
+            <div class="hint" id="ccHint">Chứng chỉ phải là loại học thuật (Academic) và còn hiệu lực.</div>
+          </div>
+
+          <button class="btn" onclick="convertCC()">Quy đổi →</button>
+
+          <div class="wbox" style="margin-top:20px">
+            <b>Lưu ý quan trọng theo quy chế 2026:</b><br>
+            • Mỗi thí sinh chỉ được chọn <b>một</b>: hoặc dùng chứng chỉ quy đổi thành điểm môn tiếng Anh, hoặc lấy điểm
+            cộng khuyến khích — không được cả hai.<br>
+            • Điểm quy đổi tiếng Anh áp dụng cho tổ hợp có môn tiếng Anh, ở cả điểm thi THPT và điểm học bạ. Ngưỡng để
+            được quy đổi: IELTS ≥ 6.0 / TOEFL iBT ≥ 60 / TOEIC N-Đ ≥ 570 & N-V ≥ 310 / PTE ≥ 47.<br>
+            • Cấu trúc điểm cộng: <b>Điểm thưởng</b> (tối đa 10, cho diện tuyển thẳng nhưng không dùng quyền) + <b>Điểm
+              xét thưởng</b> (tối đa 5, thành tích học tập/năng khiếu) + <b>Điểm khuyến khích</b>. Tổng cộng không vượt
+            10/100.<br>
+            • Nếu Điểm học lực + Điểm cộng ≥ 100 thì Điểm cộng = 100 − Điểm học lực.<br>
+            • Chuẩn tiếng Anh đầu vào CT tiếng Anh/Tiên tiến: IELTS ≥ 6.0 / TOEFL iBT ≥ 78 (5.5 tạm đạt, bổ sung khi
+            nhập học).<br>
+            • SAT / ACT / IB / A-Level: dùng cho thí sinh xét bằng chứng chỉ quốc tế (ĐT 2.4) — quy đổi thành <b>Điểm
+              năng lực</b> (thang 100) theo bảng chính thức của trường, thay cho ĐGNL.
+          </div>
+          <div class="wbox" style="margin-top:12px">
+            <b>Một vài mốc quy đổi chính thức → thang 100:</b><br>
+            SAT: 1600=100 · 1500=90 · 1400=80 · 1350=75 · 1300=70 · 1200=65<br>
+            ACT: 36=100 · 34=92 · 32=84 · 30=78 · 28=72 · 25=65<br>
+            IB: 45=100 · 42=90 · 39=81 · 36=72 · 33=65<br>
+            A-Level: A*=95 · A=85 · B=75 · C=65
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Kết quả quy đổi</h2>
+          <p class="note">Giá trị quy đổi & gợi ý cách dùng</p>
+          <div id="ccOut">
+            <div class="empty">Chọn loại chứng chỉ, nhập điểm rồi bấm "Quy đổi".</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="hint">Điểm ưu tiên KV+ĐT chỉ áp dụng & giảm dần khi tổng (học lực+cộng) ≥ 22.5, theo công thức Bộ GD&ĐT.</div>
 
-    <button class="btn" onclick="calc()">Tính điểm ngay →</button>
+    <div class="formula">
+      <strong>Công thức chính thức (Xét tuyển tổng hợp — HCMUT 2026, thang 100):</strong><br>
+      ▸ <code>ĐXT = Điểm học lực + Điểm cộng + Điểm ưu tiên</code><br>
+      ▸ <code>Điểm học lực = 0.7×ĐGNL₁₀₀ + 0.2×THPT₁₀₀ + 0.1×HọcBạ₁₀₀</code><br>
+      ▸ <code>ĐGNL₁₀₀ = (Điểm ĐGNL ÷ 1500) × 100</code> · Toán đã nhân đôi trong đề ĐGNL<br>
+      ▸ <code>THPT₁₀₀ = [(Toán×2 + Môn2 + Môn3) ÷ 40] × 100</code> · Toán nhân hệ số 2<br>
+      ▸ <code>HọcBạ₁₀₀ = [(Toán×2 + Môn2 + Môn3) ÷ 40] × 100</code> (điểm TB 3 năm mỗi môn)<br>
+      ▸ Điểm cộng tối đa 10/100 · Điểm ưu tiên tối đa 9,17/100 · ĐXT không vượt 100<br>
+      ▸ Ngưỡng đầu vào: tổng điểm xét tuyển ≥ 50/100 · Ưu tiên giảm dần khi (học lực + cộng) ≥ 75: ưu tiên = [(100 − học
+      lực − cộng)/25] × mức ƯT
+    </div>
+
+    <div class="disc">
+      <strong>Lưu ý:</strong> Công cụ tham khảo theo công thức xét tuyển tổng hợp HCMUT 2026: học lực = 70% ĐGNL (thang
+      1500, Toán đã nhân đôi trong đề) + 20% THPT + 10% học bạ, Toán nhân hệ số 2 ở cả THPT & học bạ, thang 100. Chuẩn
+      tiếng Anh đầu vào CT tiếng Anh/Tiên tiến: IELTS ≥ 6.0 (5.5 tạm đạt). Điểm chuẩn tổng hợp 2025 dao động
+      55,05–85,41/100 (KHMT cao nhất) — điểm chuẩn dự đoán dưới đây là ước lượng theo dữ liệu đó, không phải số chính
+      thức. Xem chi tiết tại <a href="https://hcmut.edu.vn" target="_blank">hcmut.edu.vn</a>. Cách quy đổi ĐGNL và điểm
+      sàn cụ thể sẽ được trường công bố cùng ngưỡng đảm bảo chất lượng.
+    </div>
+    <footer>Công cụ tham khảo cho thí sinh HCMUT 2026 · Không thay thế đề án chính thức</footer>
   </div>
 
-  <div class="card">
-    <h2>Kết quả</h2>
-    <p class="note">Điểm xét tuyển thang 30 &amp; quy đổi thang 100 (ĐHQG-HCM)</p>
-    <div id="out"><div class="empty">Chọn ngành, nhập điểm rồi bấm "Tính điểm ngay".</div></div>
-  </div>
-</div>
+  <script>
+    // Ngành HCMUT — điểm chuẩn tổng hợp dự đoán thang 100 (ước lượng từ phổ 2025: 55.05–85.41)
+    const NGANH = [
+      { n: "Khoa học Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 85.0 },
+      { n: "Kỹ thuật Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 80.0 },
+      { n: "Điện - Điện tử - Viễn thông - Tự động hoá - Thiết kế vi mạch", to: ["A00", "A01", "X06", "X07"], cstd: 76.0 },
+      { n: "Kỹ thuật Cơ khí", to: ["A00", "A01", "X06", "X07"], cstd: 68.0 },
+      { n: "Kỹ thuật Cơ Điện tử", to: ["A00", "A01", "X06", "X07"], cstd: 74.0 },
+      { n: "Dệt - May", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
+      { n: "Hoá - Thực phẩm - Sinh học", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 66.0 },
+      { n: "Xây dựng và Quản lý Dự án Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
+      { n: "Kiến Trúc", to: ["A00", "A01", "C01", "X06", "X07"], cstd: 66.0 },
+      { n: "Quản lý Công nghiệp", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 70.0 },
+      { n: "Tài nguyên và Môi trường", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 56.0 },
+      { n: "Logistics và Hệ thống Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 75.0 },
+      { n: "Kỹ thuật Vật liệu", to: ["A00", "A01", "X06", "X07", "B00", "D07", "X10", "X11"], cstd: 60.0 },
+      { n: "Vật lý Kỹ thuật", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 58.0 },
+      { n: "Cơ Kỹ thuật", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
+      { n: "Kỹ thuật Nhiệt", to: ["A00", "A01", "X06", "X07"], cstd: 62.0 },
+      { n: "Bảo dưỡng Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
+      { n: "Kỹ thuật Ô tô", to: ["A00", "A01", "X06", "X07"], cstd: 73.0 },
+      { n: "Tàu thủy - Hàng không (song ngành)", to: ["A00", "A01", "X06", "X07"], cstd: 65.0 },
+      { n: "Khoa học Dữ liệu", to: ["A00", "A01", "X06", "X07"], cstd: 78.0 },
+      { n: "Địa Kỹ thuật Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
+      { n: "Kinh tế Xây dựng", to: ["A00", "A01", "X06", "X07", "C01", "D01", "X02", "X03"], cstd: 60.0 },
+      { n: "Kỹ thuật Dầu khí", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
+      { n: "Kỹ thuật Địa chất", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
+      { n: "Kỹ thuật Đường sắt", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
+      { n: "Quản trị Kinh doanh", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 70.0 },
+      { n: "Kinh tế Tuần hoàn", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 58.0 },
+      { n: "Kỹ thuật Hạt nhân", to: ["A00", "A01", "X06", "X07"], cstd: 60.0, cond: "Yêu cầu thêm: thành phần Toán ĐGNL ≥ 225 (hoặc Toán & Lý THPT ≥ 7,5)." },
+      { n: "Kỹ thuật Bán dẫn", to: ["A00", "A01", "X06", "X07", "D07", "X10", "X11"], cstd: 78.0 },
+      { n: "Kỹ thuật Robot (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 74.0 },
+      { n: "Kỹ thuật Hóa học (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 64.0 },
+      { n: "Công nghệ Sinh học (CT tiếng Anh)", to: ["B00", "A02", "B08", "X14", "X15", "D07"], cstd: 64.0 },
+      { n: "Công nghệ Thực phẩm (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 66.0 },
+      { n: "Kỹ thuật Y sinh (CT tiếng Anh)", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 66.0 },
+      { n: "Kỹ thuật Hàng không (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 72.0 },
+      { n: "Kinh doanh số (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 68.0 },
+      { n: "Năng lượng Tái tạo (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
+      { n: "Thiết kế Vi mạch (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 76.0 },
+    ];
+    const TOHOP = {
+      A00: "Toán – Lý – Hóa", A01: "Toán – Lý – Anh", A02: "Toán – Lý – Sinh",
+      B00: "Toán – Hóa – Sinh", B08: "Toán – Sinh – Anh", C01: "Toán – Văn – Lý",
+      D01: "Toán – Văn – Anh", D07: "Toán – Hóa – Anh",
+      X02: "Toán – Văn – Tin", X03: "Toán – Lý – Tin (KHTN)", X06: "Toán – Lý – Tin",
+      X07: "Toán – Hóa – Tin", X10: "Toán – Hóa – GDKT&PL", X11: "Toán – Lý – GDKT&PL",
+      X14: "Toán – Sinh – Tin", X15: "Toán – Sinh – GDKT&PL",
+      X26: "Toán – Anh – Tin", X27: "Toán – Anh – GDKT&PL", X56: "Toán – Tin – GDKT&PL"
+    };
+    const f = x => x.toFixed(2);
 
-<div class="formula">
-  <strong>Công thức chính thức (Phương thức 2 — HCMUS 2026):</strong><br>
-  ▸ <code>Điểm_học_lực_1 = w1 × Điểm_THPT + w2 × Điểm_học_bạ</code> (thí sinh có điểm THPT)<br>
-  ▸ <code>Điểm_học_lực_2 = w3 × Điểm_ĐGNL + w4 × Điểm_học_bạ</code> (thí sinh có ĐGNL)<br>
-  ▸ <code>Điểm_học_lực = max(Điểm_học_lực_1, Điểm_học_lực_2)</code><br>
-  ▸ <code>Điểm_ĐGNL = (Điểm thi ĐGNL ÷ Max_ĐGNL) × 30</code><br>
-  ▸ <code>Điểm_xét_tuyển = Điểm_học_lực + Điểm_cộng + Điểm_ưu_tiên</code><br>
-  ▸ Nếu tổng (học lực+cộng) ≥ 22.5: <code>Điểm_ưu_tiên = [(30 − Tổng)/7.5] × Mức ƯT</code><br>
-  ▸ Nếu tổng ≥ 28.5: <code>Điểm_cộng = [(30 − Tổng)/1.5] × Điểm cộng cơ sở</code><br>
-  ▸ <code>Điểm công bố = 100 × (Điểm_xét_tuyển ÷ 30)</code> (thang ĐHQG-HCM)
-</div>
+    function switchTab(t) {
+      ['A', 'B', 'C'].forEach(x => {
+        document.getElementById('tab' + x).classList.toggle('on', t === x);
+        document.getElementById('pane' + x).classList.toggle('hide', t !== x);
+      });
+    }
+    function toggle(id) { document.getElementById(id).classList.toggle('hide'); }
 
-<div class="disc">
-  <strong>Lưu ý:</strong> Các trọng số w1–w4 và ngưỡng đảm bảo chất lượng <em>do Hội đồng tuyển sinh công bố chính thức cùng đề án sau khi có điểm thi THPT/ĐGNL 2026</em> — công cụ này dùng giá trị trong miền nhà trường công bố [0.7–0.9] / [0.1–0.3]. Điểm chuẩn dự đoán dựa trên xu hướng điểm chuẩn các năm gần đây, chỉ mang tính ước lượng tham khảo. Vui lòng đối chiếu thông tin chính thức tại <a href="https://tuyensinh.hcmus.edu.vn" target="_blank">tuyensinh.hcmus.edu.vn</a> trước khi đăng ký nguyện vọng.
-</div>
+    const sel = document.getElementById('nganh');
+    NGANH.forEach((g, i) => { const o = document.createElement('option'); o.value = i; o.textContent = g.n; sel.appendChild(o); });
+    function showInfo() { const g = NGANH[sel.value]; document.getElementById('info').textContent = 'Tổ hợp: ' + (g.to ? g.to.join(', ') : '') + ' · chuẩn dự đoán ~' + g.cstd.toFixed(1) + '/100' + (g.cond ? ' · ⚠ có điều kiện đặc thù' : ''); }
+    sel.onchange = showInfo; showInfo();
 
-<footer>Công cụ tham khảo cho thí sinh HCMUS 2026 · Dữ liệu từ phương hướng tuyển sinh dự kiến · Không thay thế đề án chính thức</footer>
-</div>
+    // populate bộ lọc tổ hợp (Tab B)
+    const bFilter = document.getElementById('bFilter');
+    const allCodes = [...new Set(NGANH.flatMap(g => g.to || []))].sort();
+    let optHtml = '<option value="ALL">Tất cả tổ hợp</option>';
+    allCodes.forEach(c => { const cnt = NGANH.filter(g => g.to && g.to.includes(c)).length; optHtml += `<option value="${c}">${c} — ${TOHOP[c] || ''} (${cnt} ngành)</option>`; });
+    bFilter.innerHTML = optHtml;
+    function showBFilter() {
+      const c = bFilter.value;
+      document.getElementById('bFilterInfo').textContent = c === 'ALL'
+        ? 'Đang xét tất cả ngành. Chọn tổ hợp để chỉ xem ngành phù hợp khối của bạn.'
+        : TOHOP[c] + ' · ' + NGANH.filter(g => g.to && g.to.includes(c)).length + ' ngành dùng tổ hợp này';
+    }
+    bFilter.onchange = showBFilter; showBFilter();
 
-<script>
-// 39 ngành chính thức từ phương hướng tuyển sinh HCMUS 2026 (dự kiến)
-// cstd = điểm chuẩn THPT dự đoán thang 30 (ước lượng từ xu hướng các năm gần đây)
-const NGANH=[
- {n:"Khoa học máy tính (Chương trình Tiên tiến)",to:"A00, A01, B08, D07, X06, X26",cstd:28.2},
- {n:"Trí tuệ nhân tạo",to:"A00, A01, B08, D07, X06, X26",cstd:28.3},
- {n:"Nhóm ngành Máy tính & CNTT (KHMT, KTPM, HTTT)",to:"A00, A01, B08, D07, X06, X26",cstd:27.5},
- {n:"Công nghệ thông tin (CT tăng cường tiếng Anh)",to:"A00, A01, B08, D07, X06, X26",cstd:26.5},
- {n:"Nhóm ngành Khoa học dữ liệu, Thống kê",to:"A00, A01, B00, B08, D01, X06",cstd:27.0},
- {n:"Khoa học dữ liệu (CT tăng cường tiếng Anh)",to:"A00, A01, B00, B08, D01, X06",cstd:25.8},
- {n:"Thiết kế vi mạch",to:"A00, A01, A02, B08, X06, X26",cstd:27.0},
- {n:"Công nghệ bán dẫn",to:"A00, A01, A02, A03, C01, X06",cstd:26.5},
- {n:"Kỹ thuật điện tử – viễn thông",to:"A00, A01, A02, B08, X06, X26",cstd:25.5},
- {n:"Kỹ thuật điện tử – viễn thông (CT tăng cường tiếng Anh)",to:"A00, A01, A02, B08, X06, X26",cstd:24.5},
- {n:"Công nghệ Sinh học",to:"A02, B00, B03, B08, X15, X16",cstd:25.0},
- {n:"Công nghệ Sinh học (CT tăng cường tiếng Anh)",to:"A02, B00, B03, B08, X15, X16",cstd:24.0},
- {n:"Sinh học",to:"A02, B00, B03, B08, X15, X16",cstd:23.5},
- {n:"Sinh học (CT tăng cường tiếng Anh)",to:"A02, B00, B03, B08, X15, X16",cstd:22.5},
- {n:"Hoá học",to:"A00, B00, C02, D07, X11, X12",cstd:24.5},
- {n:"Hóa học (CT tăng cường tiếng Anh)",to:"A00, B00, C02, D07, X11, X12",cstd:23.5},
- {n:"Công nghệ kỹ thuật Hoá học (CT tăng cường tiếng Anh)",to:"A00, B00, C02, D07, X11, X12",cstd:23.5},
- {n:"Khoa học Vật liệu",to:"A00, A01, B00, C01, C02, D07",cstd:22.5},
- {n:"Khoa học Vật liệu (CT tăng cường tiếng Anh)",to:"A00, A01, B00, C01, C02, D07",cstd:21.5},
- {n:"Công nghệ Vật liệu",to:"A00, A01, B00, C01, C02, D07",cstd:23.0},
- {n:"Công nghệ Vật liệu (CT tăng cường tiếng Anh)",to:"A00, A01, B00, C01, C02, D07",cstd:22.0},
- {n:"Nhóm ngành Vật lý học, CN Vật lý điện tử & tin học",to:"A00, A01, A02, A03, C01, X06",cstd:23.0},
- {n:"Vật lý học (CT tăng cường tiếng Anh)",to:"A00, A01, A02, A03, C01, X06",cstd:21.5},
- {n:"Công nghệ Vật lý điện tử và tin học (CT tăng cường tiếng Anh)",to:"A00, A01, A02, A03, C01, X06",cstd:22.0},
- {n:"Kỹ thuật hạt nhân",to:"A00, A01, A02, A03, C01, X06",cstd:22.0},
- {n:"Vật lý y khoa",to:"A00, A01, A02, A03, C01, X06",cstd:23.5},
- {n:"Vật lý y khoa (CT tăng cường tiếng Anh)",to:"A00, A01, A02, A03, C01, X06",cstd:22.5},
- {n:"Nhóm ngành Toán học (Toán học, Toán ứng dụng, Toán tin)",to:"A00, A01, B00, B08, D01, X06",cstd:25.5},
- {n:"Toán ứng dụng (CT tăng cường tiếng Anh)",to:"A00, A01, B00, B08, D01, X06",cstd:24.0},
- {n:"Toán tin (CT tăng cường tiếng Anh)",to:"A00, A01, B00, B08, D01, X06",cstd:24.5},
- {n:"Khoa học Môi trường",to:"A00, B00, B08, D07, X10, X14",cstd:22.0},
- {n:"Khoa học Môi trường (CT tăng cường tiếng Anh)",to:"A00, B00, B08, D07, X10, X14",cstd:21.0},
- {n:"Công nghệ Kỹ thuật Môi trường",to:"A00, B00, B08, D07, X10, X14",cstd:22.0},
- {n:"Quản lý tài nguyên và môi trường",to:"A00, B00, B08, D07, X10, X14",cstd:23.0},
- {n:"Nhóm ngành Địa chất học, Kinh tế đất đai",to:"A00, A07, C01, C04, D01, D10",cstd:22.0},
- {n:"Hải dương học",to:"A00, A01, A02, A04, C01, X06",cstd:21.0},
- {n:"Hải dương học (CT tăng cường tiếng Anh)",to:"A00, A01, A02, A04, C01, X06",cstd:20.0},
- {n:"Kỹ thuật địa chất",to:"A00, C01, C02, C04, D01, D10",cstd:20.5},
- {n:"Công nghệ giáo dục",to:"A00, A01, B00, C01, D01, D07",cstd:23.0},
-];
+    // trợ giúp tính học bạ 3 năm (Tab B)
+    function calcBHocba3() {
+      const g = id => parseFloat(document.getElementById(id).value) || 0;
+      const toan = (g('bhy_toan_10') + g('bhy_toan_11') + g('bhy_toan_12')) / 3;
+      const m2 = (g('bhy_m2_10') + g('bhy_m2_11') + g('bhy_m2_12')) / 3;
+      const m3 = (g('bhy_m3_10') + g('bhy_m3_11') + g('bhy_m3_12')) / 3;
+      document.getElementById('bhb_toan').value = toan.toFixed(2);
+      document.getElementById('bhb_m2').value = m2.toFixed(2);
+      document.getElementById('bhb_m3').value = m3.toFixed(2);
+      document.getElementById('bHbMini').innerHTML = 'TB 3 năm: Toán ' + toan.toFixed(2) + ' · Môn2 ' + m2.toFixed(2) + ' · Môn3 ' + m3.toFixed(2) + ' — đã điền vào ô trên.';
+    }
 
-let method='thpt';
-const sel=document.getElementById('nganh');
-NGANH.forEach((g,i)=>{const o=document.createElement('option');o.value=i;o.textContent=g.n;sel.appendChild(o);});
-function showTohop(){const g=NGANH[sel.value];document.getElementById('thoptip').textContent='Tổ hợp: '+g.to+' · điểm chuẩn dự đoán ~'+g.cstd.toFixed(1);}
-sel.onchange=showTohop; showTohop();
+    // học bạ helper auto-sum (Tab A)
+    ['hb_toan_10', 'hb_toan_11', 'hb_toan_12', 'hb_m2_10', 'hb_m2_11', 'hb_m2_12', 'hb_m3_10', 'hb_m3_11', 'hb_m3_12'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateHbMini);
+    });
+    function avg3(a, b, c) { const g = id => parseFloat(document.getElementById(id).value) || 0; return (g(a) + g(b) + g(c)) / 3; }
+    function calcDgnl() {
+      const g = id => parseFloat(document.getElementById(id).value) || 0;
+      const tv = g('d_tv'), ta = g('d_ta'), toan = g('d_toan'), tdkh = g('d_tdkh');
+      const tong = tv + ta + toan * 2 + tdkh;
+      document.getElementById('dgnl').value = Math.round(tong);
+      document.getElementById('dgnlMini').innerHTML = 'TV ' + tv + ' + TA ' + ta + ' + Toán×2 (' + (toan * 2) + ') + TDKH ' + tdkh + ' = <b>' + Math.round(tong) + '</b> / 1500 — đã điền.';
+    }
+    function calcBDgnl() {
+      const g = id => parseFloat(document.getElementById(id).value) || 0;
+      const tv = g('bd_tv'), ta = g('bd_ta'), toan = g('bd_toan'), tdkh = g('bd_tdkh');
+      const tong = tv + ta + toan * 2 + tdkh;
+      document.getElementById('bDgnl').value = Math.round(tong);
+      document.getElementById('bDgnlMini').innerHTML = 'TV ' + tv + ' + TA ' + ta + ' + Toán×2 (' + (toan * 2) + ') + TDKH ' + tdkh + ' = <b>' + Math.round(tong) + '</b> / 1500 — đã điền.';
+    }
+    function updateHbMini() {
+      const t = avg3('hb_toan_10', 'hb_toan_11', 'hb_toan_12'), m2 = avg3('hb_m2_10', 'hb_m2_11', 'hb_m2_12'), m3 = avg3('hb_m3_10', 'hb_m3_11', 'hb_m3_12');
+      document.getElementById('hbMini').innerHTML = 'TB 3 năm: Toán ' + t.toFixed(2) + ' · Môn2 ' + m2.toFixed(2) + ' · Môn3 ' + m3.toFixed(2);
+    }
 
-document.querySelectorAll('#method button').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('#method button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); method=b.dataset.m;
-    document.getElementById('thptBox').style.display=(method==='thpt'||method==='both')?'block':'none';
-    document.getElementById('dgnlBox').style.display=(method==='dgnl'||method==='both')?'block':'none';
-  };
-});
+    // ---- core ----
+    function hl100(dgnl, tToan, tM2, tM3, hbToan, hbM2, hbM3) {
+      const dgnl100 = (dgnl / 1500) * 100;
+      const thpt100 = ((tToan * 2 + tM2 + tM3) / 40) * 100;
+      const hb100 = ((hbToan * 2 + hbM2 + hbM3) / 40) * 100;
+      return { dgnl100, thpt100, hb100, hocLuc: 0.7 * dgnl100 + 0.2 * thpt100 + 0.1 * hb100 };
+    }
+    function applyExtra(hocLuc, cong, utFull30) {
+      // ưu tiên: quy về thang 100, giảm dần khi điểm cao (tương tự quy chế: ngưỡng 22.5/30 ~ 75/100)
+      let cong100 = Math.min(cong, 10);
+      if (hocLuc + cong100 >= 100) cong100 = Math.max(0, 100 - hocLuc);
+      let tong = hocLuc + cong100;
+      // ưu tiên thang 30 -> 100: x*(100/30); áp dụng giảm dần khi tong>=75
+      let ut100 = utFull30 * (100 / 30);
+      if (ut100 > 9.17) ut100 = 9.17;
+      if (tong >= 75) { ut100 = ut100 * (100 - tong) / 25; if (ut100 < 0) ut100 = 0; }
+      let xt = hocLuc + cong100 + ut100; if (xt > 100) xt = 100;
+      return { cong100, ut100, xt };
+    }
+    function level(diff) {
+      if (diff >= 4) return ['#11487a', 'Rất an toàn'];
+      if (diff >= 1) return ['#2f7a3e', 'Khả năng cao'];
+      if (diff >= -2) return ['#c79a3a', 'Sát ngưỡng'];
+      if (diff >= -6) return ['#d4541e', 'Khó'];
+      return ['#7a2f10', 'Rất khó'];
+    }
 
-const f=x=>x.toFixed(2);
-function calc(){
-  const g=NGANH[sel.value];
-  const hocba=parseFloat(document.getElementById('hocba').value)||0;
-  const w1=parseFloat(document.getElementById('w1').value)||0;
-  const w2=parseFloat(document.getElementById('w2').value)||0;
-  const congCoSo=parseFloat(document.getElementById('congpoint').value)||0;
-  const kv=parseFloat(document.getElementById('kv').value)||0;
-  const dt=parseFloat(document.getElementById('dt').value)||0;
+    function calc() {
+      const g = NGANH[sel.value];
+      const dgnl = parseFloat(document.getElementById('dgnl').value) || 0;
+      const tToan = parseFloat(document.getElementById('t_toan').value) || 0, tM2 = parseFloat(document.getElementById('t_m2').value) || 0, tM3 = parseFloat(document.getElementById('t_m3').value) || 0;
+      const hbToan = avg3('hb_toan_10', 'hb_toan_11', 'hb_toan_12'), hbM2 = avg3('hb_m2_10', 'hb_m2_11', 'hb_m2_12'), hbM3 = avg3('hb_m3_10', 'hb_m3_11', 'hb_m3_12');
+      const cong = parseFloat(document.getElementById('cong').value) || 0;
+      const utFull = (parseFloat(document.getElementById('kv').value) || 0) + (parseFloat(document.getElementById('dt').value) || 0);
+      const h = hl100(dgnl, tToan, tM2, tM3, hbToan, hbM2, hbM3);
+      const e = applyExtra(h.hocLuc, cong, utFull);
 
-  let hl1=null,hl2=null,monThpt=0,dgnl30=0;
-  if(method==='thpt'||method==='both'){
-    monThpt=parseFloat(document.getElementById('thpt').value)||0;
-    hl1=w1*monThpt + w2*hocba;
-  }
-  if(method==='dgnl'||method==='both'){
-    const d=parseFloat(document.getElementById('dgnl').value)||0;
-    const mx=parseFloat(document.getElementById('dgnlMax').value)||1;
-    dgnl30=(d/mx)*30;
-    hl2=w1*dgnl30 + w2*hocba;
-  }
-  let hocLuc=Math.max(hl1!==null?hl1:0, hl2!==null?hl2:0);
+      let warn = '';
+      if (dgnl === 0) warn += `<div class="warn"><b>Chưa nhập ĐGNL:</b> ĐGNL chiếm 70% điểm học lực — thiếu thành phần này điểm sẽ rất thấp. Xét tuyển tổng hợp HCMUT yêu cầu cả ĐGNL, THPT và học bạ.</div>`;
+      if (e.xt > 0 && e.xt < 50) warn += `<div class="warn"><b>Chưa đạt ngưỡng đầu vào:</b> tổng điểm xét tuyển (${f(e.xt)}) phải đạt từ <b>50/100</b> trở lên mới đủ điều kiện trúng tuyển phương thức tổng hợp HCMUT.</div>`;
+      if (e.xt >= 100) warn += `<div class="warn">Điểm đã chạm trần 100.</div>`;
 
-  // điểm cộng: giảm dần nếu tổng (học lực) >=28.5
-  let cong=congCoSo;
-  if(hocLuc>=28.5) cong = ((30-hocLuc)/1.5)*congCoSo;
-  if(cong<0) cong=0;
-
-  // điểm ưu tiên: tổng = học lực + cộng; áp dụng giảm dần nếu >=22.5
-  let utFull=kv+dt;
-  let tong=hocLuc+cong;
-  let ut=utFull;
-  if(tong>=22.5){ ut = utFull*(30-tong)/7.5; if(ut<0)ut=0; }
-
-  let xt=hocLuc+cong+ut; if(xt>30)xt=30;
-  const xt100=100*(xt/30);
-
-  let mrows='';
-  if(method==='both'){
-    mrows=`<div class="brow"><span>Học lực 1 (THPT): ${w1}×${f(monThpt)} + ${w2}×${f(hocba)}</span><b>${f(hl1)}</b></div>
-           <div class="brow"><span>Học lực 2 (ĐGNL): ${w1}×${f(dgnl30)} + ${w2}×${f(hocba)}</span><b>${f(hl2)}</b></div>
-           <div class="brow"><span>Điểm học lực = max(HL1, HL2)</span><b>${f(hocLuc)}</b></div>`;
-  } else if(method==='thpt'){
-    mrows=`<div class="brow"><span>Điểm THPT (thang 30)</span><b>${f(monThpt)}</b></div>
-           <div class="brow"><span>Điểm học lực = ${w1}×thi + ${w2}×học bạ</span><b>${f(hocLuc)}</b></div>`;
-  } else {
-    mrows=`<div class="brow"><span>ĐGNL quy đổi (thang 30)</span><b>${f(dgnl30)}</b></div>
-           <div class="brow"><span>Điểm học lực = ${w1}×ĐGNL + ${w2}×học bạ</span><b>${f(hocLuc)}</b></div>`;
-  }
-
-  let html=`<div class="result">
-    <div class="bignum">${f(xt)}<small>/30</small></div>
-    <div class="scale100">≈ ${f(xt100)} / 100 (thang công bố ĐHQG-HCM)</div>
+      let html = `<div class="bignum">${f(e.xt)}<small>/100</small></div>
+    <div class="scale100">Ngành: ${g.n}</div>
     <div class="breakdown">
-      ${mrows}
-      <div class="brow"><span>Điểm cộng (đã quy đổi)</span><b>+${f(cong)}</b></div>
-      <div class="brow"><span>Điểm ưu tiên KV+ĐT (đã quy đổi)</span><b>+${f(ut)}</b></div>
-      <div class="brow total"><span>ĐIỂM XÉT TUYỂN — ${g.n}</span><b>${f(xt)}</b></div>
+      <div class="brow"><span>ĐGNL quy đổi (thang 100)</span><b>${f(h.dgnl100)}</b></div>
+      <div class="brow"><span>THPT quy đổi (Toán×2, thang 100)</span><b>${f(h.thpt100)}</b></div>
+      <div class="brow"><span>Học bạ quy đổi (Toán×2, thang 100)</span><b>${f(h.hb100)}</b></div>
+      <div class="brow"><span>Điểm học lực = 0.7·ĐGNL + 0.2·THPT + 0.1·HB</span><b>${f(h.hocLuc)}</b></div>
+      <div class="brow"><span>Điểm cộng</span><b>+${f(e.cong100)}</b></div>
+      <div class="brow"><span>Điểm ưu tiên (quy đổi, đã giảm dần)</span><b>+${f(e.ut100)}</b></div>
+      <div class="brow total"><span>ĐIỂM XÉT TUYỂN</span><b>${f(e.xt)}</b></div>
+    </div>`+ warn + `
+    <h2 style="margin-top:26px;font-size:20px">Dự đoán trúng tuyển</h2>
+    <p class="note">Điểm bạn (${f(e.xt)}) so với chuẩn dự đoán ngành chọn + ngành gần điểm</p>`;
+      const list = [{ ...g, sel: true }];
+      NGANH.filter(x => x.n !== g.n).sort((a, b) => Math.abs(a.cstd - g.cstd) - Math.abs(b.cstd - g.cstd)).slice(0, 4).forEach(o => list.push(o));
+      list.forEach(it => {
+        const diff = e.xt - it.cstd, [col, txt] = level(diff);
+        html += `<div class="pcard" style="${it.sel ? 'border-width:3px' : ''}"><span class="dot" style="background:${col}"></span>
+      <div><div class="pn">${it.n}${it.sel ? ' ★' : ''}</div><div class="pd">${txt} · chuẩn ~${it.cstd.toFixed(1)}</div></div>
+      <span class="pp" style="color:${col}">${diff >= 0 ? '+' : ''}${diff.toFixed(1)}</span></div>`;
+      });
+      document.getElementById('out').innerHTML = html;
+    }
+
+    function suggest() {
+      const dgnl = parseFloat(document.getElementById('bDgnl').value) || 0;
+      const tToan = parseFloat(document.getElementById('bt_toan').value) || 0, tM2 = parseFloat(document.getElementById('bt_m2').value) || 0, tM3 = parseFloat(document.getElementById('bt_m3').value) || 0;
+      const hbToan = parseFloat(document.getElementById('bhb_toan').value) || 0, hbM2 = parseFloat(document.getElementById('bhb_m2').value) || 0, hbM3 = parseFloat(document.getElementById('bhb_m3').value) || 0;
+      const cong = parseFloat(document.getElementById('bCong').value) || 0;
+      const utFull = parseFloat(document.getElementById('bUt').value) || 0;
+      const h = hl100(dgnl, tToan, tM2, tM3, hbToan, hbM2, hbM3);
+      const e = applyExtra(h.hocLuc, cong, utFull);
+
+      let warn = dgnl === 0 ? `<div class="warn"><b>Chưa nhập ĐGNL</b> — chiếm 70% học lực, kết quả sẽ thấp.</div>` : '';
+      if (e.xt > 0 && e.xt < 50) warn += `<div class="warn"><b>Chưa đạt ngưỡng:</b> tổng điểm cần ≥ 50/100 mới đủ điều kiện trúng tuyển.</div>`;
+      const fcode = document.getElementById('bFilter').value;
+      let pool = NGANH.map((g, i) => ({ ...g, i }));
+      if (fcode !== 'ALL') pool = pool.filter(g => g.to && g.to.includes(fcode));
+      const matched = pool.map(g => ({ ...g, diff: e.xt - g.cstd }));
+      matched.sort((a, b) => { const sa = a.diff >= 0 ? a.diff : 1000 - a.diff, sb = b.diff >= 0 ? b.diff : 1000 - b.diff; return sa - sb; });
+      let html = `<div class="bignum" style="font-size:52px">${f(e.xt)}<small>/100</small></div>
+    <div class="scale100">Học lực ${f(h.hocLuc)} + cộng ${f(e.cong100)} + ưu tiên ${f(e.ut100)}</div>` + warn + `
+    <div class="cnt">${fcode === 'ALL' ? ('Xếp ' + matched.length + ' ngành theo độ phù hợp') : ('Tổ hợp ' + fcode + ' (' + (TOHOP[fcode] || '') + ') — ' + matched.length + ' ngành phù hợp tổ hợp này')}:</div>`;
+      if (matched.length === 0) { document.getElementById('bOut').innerHTML = html + `<div class="warn">Không có ngành nào dùng tổ hợp ${fcode}. Hãy chọn tổ hợp khác hoặc "Tất cả tổ hợp".</div>`; return; }
+      matched.forEach(it => {
+        const diff = it.diff, [col, txt] = level(diff);
+        const pct = Math.max(4, Math.min(100, Math.round((it.cstd > 0 ? (e.xt / it.cstd) : 1) * 80)));
+        const tag = it.cond ? ' ⚠' : '';
+        const tohopStr = it.to ? it.to.join(', ') : '';
+        html += `<div class="pcard"><span class="dot" style="background:${col}"></span>
+      <div style="flex:1"><div class="pn">${it.n}${tag}</div><div class="pd">${txt} · chuẩn ~${it.cstd.toFixed(1)} · ${tohopStr}</div>
+        <div class="matchbar"><div style="width:${pct}%;background:${col}"></div></div></div>
+      <span class="pp" style="color:${col}">${diff >= 0 ? '+' : ''}${diff.toFixed(1)}</span></div>`;
+      });
+      html += `<div class="hint" style="margin-top:8px">Ngành đậu &amp; sát ngưỡng lên đầu, ngành khó xuống cuối. Số phải = chênh lệch so với chuẩn dự đoán.</div>`;
+      document.getElementById('bOut').innerHTML = html;
+    }
+
+    // ---- Quy đổi SAT / IELTS (HCMUT 2026) ----
+    // Bảng quy đổi điểm môn tiếng Anh (thang 10) theo 5 mức, mốc chuẩn HCMUT: IELTS 8.0 = 10
+    const CCTA_MAP = [ // CT Chuyển tiếp QT (ĐT 2.5): IELTS/TOEFL -> điểm CCTA thang 100
+      [8.0, 100], [7.5, 90], [7.0, 80], [6.5, 70], [6.0, 0]
+    ];
+    const IELTS_MAP = [ // [min band, điểm môn Anh thang 10] — HCMUT: quy đổi từ 6.0, 8.0=10
+      [8.0, 10.0], [7.5, 9.5], [7.0, 9.0], [6.5, 8.5], [6.0, 8.0]
+    ];
+    const TOEFL_MAP = [ // TOEFL iBT -> điểm môn Anh thang 10 — HCMUT: quy đổi từ 60
+      [110, 10.0], [100, 9.5], [94, 9.0], [79, 8.5], [60, 8.0]
+    ];
+    // SAT (tổng tối đa 1600) -> quy đổi tương quan; HCMUT siết chặt. Ước lượng theo thang 100 học lực.
+    // Bảng quy đổi chính thức HCMUT 2026 (Đối tượng 2.4) -> Điểm năng lực thang 100
+    const SAT_MAP = [ // [min SAT, điểm thang 100]
+      [1600, 100], [1590, 99], [1580, 98], [1570, 97], [1560, 96], [1550, 95], [1540, 94], [1530, 93], [1520, 92], [1510, 91],
+      [1500, 90], [1490, 89], [1480, 88], [1470, 87], [1460, 86], [1450, 85], [1440, 84], [1430, 83], [1420, 82], [1410, 81],
+      [1400, 80], [1390, 79], [1380, 78], [1370, 77], [1360, 76], [1350, 75], [1340, 74], [1330, 73], [1320, 72], [1310, 71],
+      [1300, 70], [1280, 69], [1260, 68], [1240, 67], [1220, 66], [1200, 65]
+    ];
+    const ACT_MAP = [ // [min ACT, điểm thang 100]
+      [36, 100], [35, 96], [34, 92], [33, 88], [32, 84], [31, 81], [30, 78], [29, 75], [28, 72], [27, 69], [26, 67], [25, 65]
+    ];
+    const IB_MAP = [ // [min IB, điểm thang 100]
+      [45, 100], [44, 96], [43, 93], [42, 90], [41, 87], [40, 84], [39, 81], [38, 78], [37, 75], [36, 72], [35, 69], [34, 67], [33, 65]
+    ];
+    const ALEVEL_MAP = [ // [bậc A-Level, điểm thang 100]; nhập dạng text
+      ['A*', 95], ['A', 85], ['B', 75], ['C', 65]
+    ];
+    let ccType = 'ielts';
+    document.querySelectorAll('#ccType button').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('#ccType button').forEach(x => x.classList.remove('on')); b.classList.add('on'); ccType = b.dataset.c;
+        const lbl = document.getElementById('ccLabel'), hint = document.getElementById('ccHint'), inp = document.getElementById('ccVal');
+        const cfg = {
+          ielts: ['Điểm IELTS Academic (0–9.0)', '0.5', 'VD: 7.0', 'Quy đổi điểm môn Anh (thang 10) từ 6.0; chuẩn đầu vào CT tiếng Anh ≥ 6.0; IELTS 8.0 = 10 điểm.'],
+          toefl: ['Điểm TOEFL iBT (0–120)', '1', 'VD: 90', 'Quy đổi điểm môn Anh (thang 10) từ 60; chuẩn đầu vào ≥ 78.'],
+          sat: ['Điểm SAT (1200–1600)', '10', 'VD: 1400', 'Quy đổi sang Điểm năng lực (thang 100) cho thí sinh dùng chứng chỉ quốc tế (ĐT 2.4). Bảng chính thức HCMUT 2026.'],
+          act: ['Điểm ACT (25–36)', '1', 'VD: 32', 'Quy đổi sang Điểm năng lực (thang 100), bảng chính thức HCMUT 2026.'],
+          ib: ['Điểm IB (33–45)', '1', 'VD: 40', 'Quy đổi sang Điểm năng lực (thang 100), bảng chính thức HCMUT 2026.'],
+          alevel: ['Bậc A-Level (A*, A, B, C)', '', 'VD: A', 'Nhập bậc A* / A / B / C. Quy đổi sang Điểm năng lực (thang 100).']
+        };
+        const c = cfg[ccType];
+        lbl.textContent = c[0]; inp.placeholder = c[2]; hint.textContent = c[3];
+        if (ccType === 'alevel') { inp.type = 'text'; } else { inp.type = 'number'; inp.step = c[1]; }
+        inp.value = '';
+      };
+    });
+
+    function lookupMap(map, val) { for (const [m, v] of map) { if (val >= m) return v; } return null; }
+    function ccResult(label, pt) {
+      return `<div class="bignum" style="font-size:54px">${pt}<small>/100</small></div>
+    <div class="scale100">Điểm năng lực quy đổi từ ${label}</div>
+    <div class="breakdown">
+      <div class="brow"><span>Chứng chỉ</span><b>${label}</b></div>
+      <div class="brow total"><span>→ Điểm năng lực (thang 100)</span><b>${pt}</b></div>
     </div>
-  </div>
-  <h2 style="margin-top:26px;font-size:20px">Dự đoán trúng tuyển</h2>
-  <p class="note">So điểm của bạn (${f(xt)}) với điểm chuẩn dự đoán của ngành đang chọn và vài ngành tham chiếu</p>
-  <div class="predict">`;
+    <div class="wbox" style="margin-top:14px">Đây là <b>Điểm năng lực</b> dùng cho thí sinh xét tuyển bằng chứng chỉ quốc tế (Đối tượng 2.4). Điểm này thay cho ĐGNL trong công thức học lực: <b>0.7 × ${pt} + 0.2 × THPT₁₀₀ + 0.1 × HọcBạ₁₀₀</b>. Bảng quy đổi chính thức HCMUT 2026.</div>`;
+    }
 
-  // ngành đang chọn + 4 ngành gần điểm để tham chiếu
-  const list=[{...g,sel:true}];
-  const others=NGANH.map((x,i)=>({...x,i})).filter(x=>x.n!==g.n)
-     .sort((a,b)=>Math.abs(a.cstd-g.cstd)-Math.abs(b.cstd-g.cstd)).slice(0,4);
-  others.forEach(o=>list.push(o));
-
-  list.forEach(item=>{
-    const diff=xt-item.cstd; let color,txt;
-    if(diff>=1.0){color='#0d5c4f';txt='Rất an toàn';}
-    else if(diff>=0.2){color='#5a8a1e';txt='Khả năng cao';}
-    else if(diff>=-0.5){color='#caa24a';txt='Sát ngưỡng';}
-    else if(diff>=-1.5){color='#c8442b';txt='Khó';}
-    else{color='#7a1f12';txt='Rất khó';}
-    html+=`<div class="pcard" style="${item.sel?'border-width:3px':''}">
-      <span class="dot" style="background:${color}"></span>
-      <div><div class="pn">${item.n}${item.sel?' ★':''}</div><div class="pd">${txt} · chuẩn dự đoán ~${item.cstd.toFixed(1)}</div></div>
-      <span class="pp" style="color:${color}">${diff>=0?'+':''}${diff.toFixed(1)}</span>
-    </div>`;
-  });
-  html+=`</div><div class="hint" style="margin-top:6px">★ = ngành bạn chọn. Số bên phải = chênh lệch điểm so với chuẩn dự đoán (xanh = an toàn, vàng = sát ngưỡng, đỏ = khó).</div>`;
-  document.getElementById('out').innerHTML=html;
-}
-</script>
+    function convertCC() {
+      const v = parseFloat(document.getElementById('ccVal').value) || 0;
+      let html = '';
+      if (ccType === 'ielts') {
+        const eng = lookupMap(IELTS_MAP, v);
+        const intake = v >= 6.0 ? 'Đạt chuẩn đầu vào CT tiếng Anh/Tiên tiến (≥6.0).' : (v >= 5.5 ? 'Tạm đạt chuẩn (5.5) — phải bổ sung chứng chỉ khi nhập học.' : 'Chưa đạt chuẩn tiếng Anh đầu vào (cần ≥5.5).');
+        if (eng === null) { html = `<div class="warn">IELTS ${v} chưa đủ mức quy đổi điểm môn tiếng Anh (HCMUT quy đổi từ <b>6.0</b> trở lên).${v >= 5.5 ? ' Bạn vẫn được xem là tạm đạt chuẩn đầu vào (5.5) cho CT tiếng Anh, bổ sung khi nhập học.' : ''}</div>`; }
+        else {
+          html = `<div class="bignum" style="font-size:54px">${eng.toFixed(1)}<small>/10</small></div>
+      <div class="scale100">Điểm môn Tiếng Anh quy đổi từ IELTS ${v}</div>
+      <div class="breakdown">
+        <div class="brow"><span>IELTS Academic</span><b>${v}</b></div>
+        <div class="brow"><span>→ Điểm môn Tiếng Anh (thang 10)</span><b>${eng.toFixed(1)}</b></div>
+        <div class="brow total"><span>Chuẩn đầu vào</span><b style="font-size:13px;font-weight:400">${v >= 6 ? '✓ Đạt' : (v >= 5.5 ? '△ Tạm đạt' : '✗ Chưa đạt')}</b></div>
+      </div>
+      <div class="wbox" style="margin-top:14px">${intake}<br><br>Bạn có thể dùng <b>${eng.toFixed(1)}</b> thay cho điểm tiếng Anh trong tổ hợp có môn Anh (cả điểm THPT lẫn học bạ), <em>hoặc</em> chọn lấy điểm cộng khuyến khích — không dùng đồng thời cả hai.</div>`;
+        }
+      } else if (ccType === 'toefl') {
+        const eng = lookupMap(TOEFL_MAP, v);
+        if (eng === null) { html = `<div class="warn">TOEFL iBT ${v} chưa đủ mức quy đổi (HCMUT quy đổi từ <b>60</b> trở lên).</div>`; }
+        else {
+          html = `<div class="bignum" style="font-size:54px">${eng.toFixed(1)}<small>/10</small></div>
+      <div class="scale100">Điểm môn Tiếng Anh quy đổi từ TOEFL iBT ${v}</div>
+      <div class="breakdown">
+        <div class="brow"><span>TOEFL iBT</span><b>${v}</b></div>
+        <div class="brow"><span>→ Điểm môn Tiếng Anh (thang 10)</span><b>${eng.toFixed(1)}</b></div>
+        <div class="brow total"><span>Chuẩn đầu vào (≥79)</span><b style="font-size:13px;font-weight:400">${v >= 79 ? '✓ Đạt' : '✗ Chưa đạt'}</b></div>
+      </div>
+      <div class="wbox" style="margin-top:14px">Dùng ${eng.toFixed(1)} thay điểm tiếng Anh trong tổ hợp có môn Anh (THPT & học bạ) hoặc lấy điểm cộng — chỉ chọn một.</div>`;
+        }
+      } else if (ccType === 'alevel') {
+        const key = (document.getElementById('ccVal').value || '').trim().toUpperCase();
+        const row = ALEVEL_MAP.find(r => r[0] === key);
+        if (!row) { html = `<div class="warn">Nhập bậc A-Level hợp lệ: A*, A, B hoặc C.</div>`; }
+        else {
+          html = ccResult('A-Level ' + key, row[1]);
+        }
+      } else {
+        let map, name, unit;
+        if (ccType === 'sat') { map = SAT_MAP; name = 'SAT'; unit = v; }
+        else if (ccType === 'act') { map = ACT_MAP; name = 'ACT'; unit = v; }
+        else { map = IB_MAP; name = 'IB'; unit = v; }
+        const pt = lookupMap(map, v);
+        if (pt === null) { html = `<div class="warn">${name} ${v} dưới mức quy đổi tối thiểu trong bảng chính thức.</div>`; }
+        else { html = ccResult(name + ' ' + unit, pt); }
+      }
+      document.getElementById('ccOut').innerHTML = html;
+    }
+  </script>
 </body>
+
 </html>
