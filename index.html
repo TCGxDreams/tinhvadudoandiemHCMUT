@@ -809,10 +809,10 @@
     <div class="disc">
       <strong>Lưu ý:</strong> Công cụ tham khảo theo công thức xét tuyển tổng hợp HCMUT 2026: học lực = 70% ĐGNL (thang
       1500, Toán đã nhân đôi trong đề) + 20% THPT + 10% học bạ, Toán nhân hệ số 2 ở cả THPT & học bạ, thang 100. Chuẩn
-      tiếng Anh đầu vào CT tiếng Anh/Tiên tiến: IELTS ≥ 6.0 (5.5 tạm đạt). Điểm chuẩn tổng hợp 2025 dao động
-      55,05–85,41/100 (KHMT cao nhất) — điểm chuẩn dự đoán dưới đây là ước lượng theo dữ liệu đó, không phải số chính
-      thức. Xem chi tiết tại <a href="https://hcmut.edu.vn" target="_blank">hcmut.edu.vn</a>. Cách quy đổi ĐGNL và điểm
-      sàn cụ thể sẽ được trường công bố cùng ngưỡng đảm bảo chất lượng.
+      tiếng Anh đầu vào CT tiếng Anh/Tiên tiến: IELTS ≥ 6.0 (5.5 tạm đạt). Điểm chuẩn dự đoán 2026 (thang 100) được tính
+      từ mô hình xu hướng dựa trên điểm chuẩn tổng hợp THẬT 2023–2025 (đã chuẩn hoá 2024 từ thang 90), không phải số
+      chính thức. Xem chi tiết tại <a href="https://hcmut.edu.vn" target="_blank">hcmut.edu.vn</a>. Cách quy đổi ĐGNL và
+      điểm sàn cụ thể sẽ được trường công bố cùng ngưỡng đảm bảo chất lượng.
     </div>
     <footer>Công cụ tham khảo cho thí sinh HCMUT 2026 · Không thay thế đề án chính thức</footer>
   </div>
@@ -820,44 +820,44 @@
   <script>
     // Ngành HCMUT — điểm chuẩn tổng hợp dự đoán thang 100 (ước lượng từ phổ 2025: 55.05–85.41)
     const NGANH = [
-      { n: "Khoa học Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 85.0 },
-      { n: "Kỹ thuật Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 80.0 },
-      { n: "Điện - Điện tử - Viễn thông - Tự động hoá - Thiết kế vi mạch", to: ["A00", "A01", "X06", "X07"], cstd: 76.0 },
-      { n: "Kỹ thuật Cơ khí", to: ["A00", "A01", "X06", "X07"], cstd: 68.0 },
-      { n: "Kỹ thuật Cơ Điện tử", to: ["A00", "A01", "X06", "X07"], cstd: 74.0 },
-      { n: "Dệt - May", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
-      { n: "Hoá - Thực phẩm - Sinh học", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 66.0 },
-      { n: "Xây dựng và Quản lý Dự án Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
-      { n: "Kiến Trúc", to: ["A00", "A01", "C01", "X06", "X07"], cstd: 66.0 },
-      { n: "Quản lý Công nghiệp", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 70.0 },
-      { n: "Tài nguyên và Môi trường", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 56.0 },
-      { n: "Logistics và Hệ thống Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 75.0 },
-      { n: "Kỹ thuật Vật liệu", to: ["A00", "A01", "X06", "X07", "B00", "D07", "X10", "X11"], cstd: 60.0 },
-      { n: "Vật lý Kỹ thuật", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 58.0 },
-      { n: "Cơ Kỹ thuật", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
-      { n: "Kỹ thuật Nhiệt", to: ["A00", "A01", "X06", "X07"], cstd: 62.0 },
-      { n: "Bảo dưỡng Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
-      { n: "Kỹ thuật Ô tô", to: ["A00", "A01", "X06", "X07"], cstd: 73.0 },
-      { n: "Tàu thủy - Hàng không (song ngành)", to: ["A00", "A01", "X06", "X07"], cstd: 65.0 },
-      { n: "Khoa học Dữ liệu", to: ["A00", "A01", "X06", "X07"], cstd: 78.0 },
-      { n: "Địa Kỹ thuật Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
-      { n: "Kinh tế Xây dựng", to: ["A00", "A01", "X06", "X07", "C01", "D01", "X02", "X03"], cstd: 60.0 },
-      { n: "Kỹ thuật Dầu khí", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
-      { n: "Kỹ thuật Địa chất", to: ["A00", "A01", "X06", "X07"], cstd: 55.0 },
+      { n: "Khoa học Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 87.58 },
+      { n: "Kỹ thuật Máy tính", to: ["A00", "A01", "X06", "X07"], cstd: 84.31 },
+      { n: "Điện - Điện tử - Viễn thông - Tự động hoá - Thiết kế vi mạch", to: ["A00", "A01", "X06", "X07"], cstd: 85.02 },
+      { n: "Kỹ thuật Cơ khí", to: ["A00", "A01", "X06", "X07"], cstd: 80.51 },
+      { n: "Kỹ thuật Cơ Điện tử", to: ["A00", "A01", "X06", "X07"], cstd: 84.82 },
+      { n: "Dệt - May", to: ["A00", "A01", "X06", "X07"], cstd: 61.78 },
+      { n: "Hoá - Thực phẩm - Sinh học", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 76.81 },
+      { n: "Xây dựng và Quản lý Dự án Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 54.95 },
+      { n: "Kiến Trúc", to: ["A00", "A01", "C01", "X06", "X07"], cstd: 69.84 },
+      { n: "Quản lý Công nghiệp", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 79.22 },
+      { n: "Tài nguyên và Môi trường", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 63.01 },
+      { n: "Logistics và Hệ thống Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 82.62 },
+      { n: "Kỹ thuật Vật liệu", to: ["A00", "A01", "X06", "X07", "B00", "D07", "X10", "X11"], cstd: 75.82 },
+      { n: "Vật lý Kỹ thuật", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 81.35 },
+      { n: "Cơ Kỹ thuật", to: ["A00", "A01", "X06", "X07"], cstd: 80.58 },
+      { n: "Kỹ thuật Nhiệt", to: ["A00", "A01", "X06", "X07"], cstd: 77.41 },
+      { n: "Bảo dưỡng Công nghiệp", to: ["A00", "A01", "X06", "X07"], cstd: 68.07 },
+      { n: "Kỹ thuật Ô tô", to: ["A00", "A01", "X06", "X07"], cstd: 78.62 },
+      { n: "Tàu thủy - Hàng không (song ngành)", to: ["A00", "A01", "X06", "X07"], cstd: 81.64 },
+      { n: "Khoa học Dữ liệu", to: ["A00", "A01", "X06", "X07"], cstd: 84.35 },
+      { n: "Địa Kỹ thuật Xây dựng", to: ["A00", "A01", "X06", "X07"], cstd: 55.06 },
+      { n: "Kinh tế Xây dựng", to: ["A00", "A01", "X06", "X07", "C01", "D01", "X02", "X03"], cstd: 55.72 },
+      { n: "Kỹ thuật Dầu khí", to: ["A00", "A01", "X06", "X07"], cstd: 60.59 },
+      { n: "Kỹ thuật Địa chất", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
       { n: "Kỹ thuật Đường sắt", to: ["A00", "A01", "X06", "X07"], cstd: 58.0 },
-      { n: "Quản trị Kinh doanh", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 70.0 },
-      { n: "Kinh tế Tuần hoàn", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 58.0 },
-      { n: "Kỹ thuật Hạt nhân", to: ["A00", "A01", "X06", "X07"], cstd: 60.0, cond: "Yêu cầu thêm: thành phần Toán ĐGNL ≥ 225 (hoặc Toán & Lý THPT ≥ 7,5)." },
-      { n: "Kỹ thuật Bán dẫn", to: ["A00", "A01", "X06", "X07", "D07", "X10", "X11"], cstd: 78.0 },
-      { n: "Kỹ thuật Robot (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 74.0 },
-      { n: "Kỹ thuật Hóa học (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 64.0 },
-      { n: "Công nghệ Sinh học (CT tiếng Anh)", to: ["B00", "A02", "B08", "X14", "X15", "D07"], cstd: 64.0 },
-      { n: "Công nghệ Thực phẩm (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 66.0 },
-      { n: "Kỹ thuật Y sinh (CT tiếng Anh)", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 66.0 },
-      { n: "Kỹ thuật Hàng không (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 72.0 },
-      { n: "Kinh doanh số (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 68.0 },
-      { n: "Năng lượng Tái tạo (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 60.0 },
-      { n: "Thiết kế Vi mạch (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 76.0 },
+      { n: "Quản trị Kinh doanh", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 71.24 },
+      { n: "Kinh tế Tuần hoàn", to: ["A00", "A01", "X07", "B00", "D07", "X11"], cstd: 64.38 },
+      { n: "Kỹ thuật Hạt nhân", to: ["A00", "A01", "X06", "X07"], cstd: 62.0, cond: "Yêu cầu thêm: thành phần Toán ĐGNL ≥ 225 (hoặc Toán & Lý THPT ≥ 7,5)." },
+      { n: "Kỹ thuật Bán dẫn", to: ["A00", "A01", "X06", "X07", "D07", "X10", "X11"], cstd: 83.09 },
+      { n: "Kỹ thuật Robot (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 73.89 },
+      { n: "Kỹ thuật Hóa học (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 63.3 },
+      { n: "Công nghệ Sinh học (CT tiếng Anh)", to: ["B00", "A02", "B08", "X14", "X15", "D07"], cstd: 66.13 },
+      { n: "Công nghệ Thực phẩm (CT tiếng Anh)", to: ["A00", "B00", "B08", "D07", "X10", "X11"], cstd: 59.21 },
+      { n: "Kỹ thuật Y sinh (CT tiếng Anh)", to: ["A00", "A01", "A02", "X06", "X07"], cstd: 64.74 },
+      { n: "Kỹ thuật Hàng không (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 78.79 },
+      { n: "Kinh doanh số (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07", "D01", "D07", "X26", "X27"], cstd: 59.06 },
+      { n: "Năng lượng Tái tạo (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 58.07 },
+      { n: "Thiết kế Vi mạch (CT tiếng Anh)", to: ["A00", "A01", "X06", "X07"], cstd: 83.09 },
     ];
     const TOHOP = {
       A00: "Toán – Lý – Hóa", A01: "Toán – Lý – Anh", A02: "Toán – Lý – Sinh",
